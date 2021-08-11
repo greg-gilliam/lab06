@@ -20,7 +20,7 @@ async function run() {
                 CREATE TABLE desserts (
                     id SERIAL PRIMARY KEY NOT NULL,
                     name VARCHAR(512) NOT NULL,
-                    icing VARCHAR(512) NOT NULL,
+                    icing BOOL NOT NULL,
                     type VARCHAR(512) NOT NULL
             );
         `);

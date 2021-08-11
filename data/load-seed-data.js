@@ -21,15 +21,14 @@ async function run() {
       })
     );
 
-    const user = users[0].rows[0];
 
     await Promise.all(
       desserts.map(dessert => {
         return client.query(`
-                    INSERT INTO desserts (id, name, icing, type)
+                    INSERT INTO desserts (name, icing, type)
                     VALUES ($1, $2, $3, $4);
                 `,
-          ([dessert.id, dessert.name, dessert.icing, dessert.type]);
+          [dessert.id, dessert.name, dessert.icing, dessert.type]);
       })
     );
 
