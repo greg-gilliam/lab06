@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 const client = require('../lib/client');
 // import our seed data:
 
@@ -16,9 +17,10 @@ async function run() {
       desserts.map(dessert => {
         return client.query(`
                     INSERT INTO desserts (name, icing, type)
-                    VALUES ($1, $2, $3, $4);
+                    VALUES ($1, $2, $3);
                 `,
-          [dessert.id, dessert.name, dessert.icing, dessert.type]);
+
+          [dessert.name, dessert.icing, dessert.type]);
       })
     );
 
