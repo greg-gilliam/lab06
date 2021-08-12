@@ -5,7 +5,7 @@ const { execSync } = require('child_process');
 const fakeRequest = require('supertest');
 const app = require('../lib/app');
 const client = require('../lib/client');
-const dessertsData = require('../data/desserts.js');
+// const dessertsData = require('../data/desserts.js');
 
 describe('app routes', () => {
   describe('routes', () => {
@@ -53,12 +53,13 @@ describe('app routes', () => {
       ];
 
       const data = await fakeRequest(app)
-        .get('/animals')
+        .get('/desserts')
         .expect('Content-Type', /json/);
       // .expect(200);
 
       expect(data.body).toEqual(expectation);
     });
+
     test('POST /desserts creates a new dessert', async () => {
       const newDessert = {
         name: 'Chocolate Chip',
@@ -75,6 +76,22 @@ describe('app routes', () => {
       expect(data.body.name).toEqual(newDessert.name);
       expect(data.body.id).toBeGreaterThan(0);
 
+    });
+    test('PUT /desserts creates an updated dessert', async () => {
+      const updatedDessert = {
+        name: 'Chocolate Chip and walnut',
+        icing: false,
+        type: 'cookie'
+      };
+
+      const data = await fakeRequest(app)
+        .put('/desserts')
+        .send(updatedDessert)
+        // .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(data.body.name).toEqual(updatedDessert.name);
+      expect(data.body.id).toBeGreaterThan(0);
     });
   });
 });
