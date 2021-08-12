@@ -93,5 +93,21 @@ describe('app routes', () => {
       expect(data.body.name).toEqual(updatedDessert.name);
       expect(data.body.id).toBeGreaterThan(0);
     });
+    test('POST /desserts creates an updated dessert', async () => {
+      const newDessertInArray = {
+        name: 'Chocolate Chip',
+        icing: false,
+        type: 'cookie'
+      };
+
+      const data = await fakeRequest(app)
+        .put('/desserts')
+        .send(newDessertInArray)
+        // .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(data.body.name).toEqual(newDessertInArray.name);
+      expect(data.body.id).toBeGreaterThan(0);
+    });
   });
 });
