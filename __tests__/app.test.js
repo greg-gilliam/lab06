@@ -109,5 +109,24 @@ describe('app routes', () => {
       expect(data.body.name).toEqual(newDessertInArray.name);
       expect(data.body.id).toBeGreaterThan(0);
     });
+    test('DELETE /deletes one object in the array by query id', async () => {
+      const deletedObject = {
+        name: 'Chocolate Chip',
+        icing: false,
+        type: 'cookie'
+      };
+      await fakeRequest(app)
+        .post('/desserts')
+        .send(deletedObject)
+        // .expect(200)
+        .expect('Content-Type', /json/);
+      const data = await fakeRequest(app)
+        .delete('/desserts/6')
+        .expect(200)
+        .expect('Content-Type', /json/);
+      console.log(data.body);
+      expect(data.body).toEqual({ ...deletedObject, id: 6 });
+      // expect(data.body.id).toBeGreaterThan(0);
+    });
   });
 });
