@@ -17,11 +17,15 @@ async function run() {
                     email VARCHAR(256) NOT NULL,
                     hash VARCHAR(512) NOT NULL
                 );           
+                CREATE TABLE types (
+                  id SERIAL PRIMARY KEY,
+                  name VARCHAR(512) UNIQUE NOT NULL
+                );
                 CREATE TABLE desserts (
                     id SERIAL PRIMARY KEY NOT NULL,
                     name VARCHAR(512) NOT NULL,
                     icing BOOL NOT NULL,
-                    type VARCHAR(512) NOT NULL
+                    type_id INTEGER NOT NULL REFERENCES types(id)
             );
         `);
 
