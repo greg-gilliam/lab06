@@ -31,37 +31,20 @@ describe('desserts routes', () => {
 
   
     test('GET /desserts returns list of desserts', async() => {
-      const expected = [
+      const expected = 
         {
           name: 'Lemon Meringue',
           icing: false,
           type_id: 2,
-          id: 1
-        },
-        {
-          name: 'Carrot Cake',
-          icing: true,
-          type_id: 1,
-          id: 2
-        },
-        {
-          name: 'Devils Food Cake',
-          icing: true,
-          type_id: 1,
-          id: 3
-        }
-      ];
+          id: 1,
+          type: 'pie',
+        };
       const data = await fakeRequest(app)
         .get('/desserts')
-        .expect('Content-Type', /json/);
-      // .expect(200);
-      // const names = data.map(dessert=>dessert.name);
+        .expect('Content-Type', /json/)
+        .expect(200);
 
-      expect(data.body).toEqual(expected);
-
-      // expect(dessertsData.length).toBe(dessertsData.length);
-
-      // expect(data.body[0].id).toBeGreaterThan(0);
+      expect(data.body[0]).toEqual(expected);
     });
     test('GET /desserts:id returns list of individual desserts', async() => {
       const expected = 
@@ -69,7 +52,8 @@ describe('desserts routes', () => {
           name: 'Lemon Meringue',
           icing: false,
           type_id: 2,
-          id: 1
+          id: 1, 
+          type: 'pie'
         };
       const data = await fakeRequest(app)
         .get('/desserts/1')
