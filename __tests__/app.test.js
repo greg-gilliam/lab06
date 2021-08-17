@@ -5,9 +5,9 @@ const { execSync } = require('child_process');
 const fakeRequest = require('supertest');
 const app = require('../lib/app');
 const client = require('../lib/client');
-// const dessertsData = require('../data/desserts.js');
 
-describe('app routes', () => {
+
+describe('desserts routes', () => {
   describe('routes', () => {
     // let token;
 
@@ -29,42 +29,77 @@ describe('app routes', () => {
       return client.end(done);
     });
 
-    test.skip('returns animals', async () => {
-
-      const expectation = [
+  
+    test('GET /desserts returns list of desserts', async() => {
+      const expected = [
         {
-          'id': 1,
-          'name': 'bessie',
-          'cool_factor': 3,
-          'owner_id': 1
+          name: 'Lemon Meringue',
+          icing: false,
+          type_id: 2,
+          id: 1
         },
         {
-          'id': 2,
-          'name': 'jumpy',
-          'cool_factor': 4,
-          'owner_id': 1
+          name: 'Carrot Cake',
+          icing: true,
+          type_id: 1,
+          id: 2
         },
         {
-          'id': 3,
-          'name': 'spot',
-          'cool_factor': 10,
-          'owner_id': 1
+          name: 'Devils Food Cake',
+          icing: true,
+          type_id: 1,
+          id: 3
         }
       ];
-
       const data = await fakeRequest(app)
         .get('/desserts')
         .expect('Content-Type', /json/);
       // .expect(200);
+      // const names = data.map(dessert=>dessert.name);
 
-      expect(data.body).toEqual(expectation);
+      expect(data.body).toEqual(expected);
+
+      // expect(dessertsData.length).toBe(dessertsData.length);
+
+      // expect(data.body[0].id).toBeGreaterThan(0);
     });
+    test('GET /desserts:id returns list of individual desserts', async() => {
+      const expected = 
+        {
+          name: 'Lemon Meringue',
+          icing: false,
+          type_id: 2,
+          id: 1
+        };
+      const data = await fakeRequest(app)
+        .get('/desserts/1')
+        .expect('Content-Type', /json/)
+        .expect(200);
+      // const names = data.map(dessert=>dessert.name);
 
+      expect(data.body).toEqual(expected);
+
+      // expect(dessertsData.length).toBe(dessertsData.length);
+
+      // expect(data.body[0].id).toBeGreaterThan(0);
+    });
+    test('(types)GET / returns type of desserts', async() => {
+      const data = await fakeRequest(app)
+        .get('/types')
+        .expect('Content-Type', /json/)
+        .expect(200);
+      const typeData = [
+        { name: 'cake', id:1 },
+        { name: 'pie', id:2 },
+        { name: 'cookie', id:3 }
+      ];
+      expect(data.body).toEqual(typeData);
+    });
     test('POST /desserts creates a new dessert', async () => {
       const newDessert = {
         name: 'Chocolate Chip',
         icing: false,
-        type: 'cookie'
+        type_id: 3
       };
 
       const data = await fakeRequest(app)
@@ -81,7 +116,7 @@ describe('app routes', () => {
       const updatedDessert = {
         name: 'Chocolate Chip and walnut',
         icing: false,
-        type: 'cookie'
+        type_id: 3
       };
 
       const data = await fakeRequest(app)
@@ -91,13 +126,13 @@ describe('app routes', () => {
         .expect('Content-Type', /json/);
 
       expect(data.body.name).toEqual(updatedDessert.name);
-      expect(data.body.id).toBeGreaterThan(0);
+      expect(data.body.type_id).toBeGreaterThan(0);
     });
     test('POST /desserts creates an updated dessert', async () => {
       const newDessertInArray = {
         name: 'Chocolate Chip',
         icing: false,
-        type: 'cookie'
+        type_id: 3
       };
 
       const data = await fakeRequest(app)
@@ -113,7 +148,7 @@ describe('app routes', () => {
       const deletedObject = {
         name: 'Chocolate Chip',
         icing: false,
-        type: 'cookie'
+        type_id: 3
       };
       await fakeRequest(app)
         .post('/desserts')
@@ -124,7 +159,6 @@ describe('app routes', () => {
         .delete('/desserts/6')
         .expect(200)
         .expect('Content-Type', /json/);
-      console.log(data.body);
       expect(data.body).toEqual({ ...deletedObject, id: 6 });
       // expect(data.body.id).toBeGreaterThan(0);
     });
