@@ -5,7 +5,7 @@ const { execSync } = require('child_process');
 const fakeRequest = require('supertest');
 const app = require('../lib/app');
 const client = require('../lib/client');
-// const dessertsData = require('../data/desserts.js');
+
 
 describe('desserts routes', () => {
   describe('routes', () => {
@@ -30,7 +30,7 @@ describe('desserts routes', () => {
     });
 
   
-    test('GET /type returns list of desserts', async() => {
+    test('GET /desserts returns list of desserts', async() => {
       const expected = [
         {
           name: 'Lemon Meringue',
@@ -62,6 +62,38 @@ describe('desserts routes', () => {
       // expect(dessertsData.length).toBe(dessertsData.length);
 
       // expect(data.body[0].id).toBeGreaterThan(0);
+    });
+    test('GET /desserts:id returns list of individual desserts', async() => {
+      const expected = 
+        {
+          name: 'Lemon Meringue',
+          icing: false,
+          type_id: 2,
+          id: 1
+        };
+      const data = await fakeRequest(app)
+        .get('/desserts/1')
+        .expect('Content-Type', /json/)
+        .expect(200);
+      // const names = data.map(dessert=>dessert.name);
+
+      expect(data.body).toEqual(expected);
+
+      // expect(dessertsData.length).toBe(dessertsData.length);
+
+      // expect(data.body[0].id).toBeGreaterThan(0);
+    });
+    test('(types)GET / returns type of desserts', async() => {
+      const data = await fakeRequest(app)
+        .get('/types')
+        .expect('Content-Type', /json/)
+        .expect(200);
+      const typeData = [
+        { name: 'cake', id:1 },
+        { name: 'pie', id:2 },
+        { name: 'cookie', id:3 }
+      ];
+      expect(data.body).toEqual(typeData);
     });
     test('POST /desserts creates a new dessert', async () => {
       const newDessert = {
@@ -127,7 +159,6 @@ describe('desserts routes', () => {
         .delete('/desserts/6')
         .expect(200)
         .expect('Content-Type', /json/);
-      console.log(data.body);
       expect(data.body).toEqual({ ...deletedObject, id: 6 });
       // expect(data.body.id).toBeGreaterThan(0);
     });
