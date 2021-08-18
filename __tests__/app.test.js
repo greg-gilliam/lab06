@@ -96,7 +96,7 @@ describe('desserts routes', () => {
       expect(data.body.id).toBeGreaterThan(0);
 
     });
-    test('PUT /desserts creates an updated dessert', async () => {
+    test.only('PUT /desserts creates an updated dessert', async () => {
       const updatedDessert = {
         name: 'Chocolate Chip and walnut',
         icing: false,
@@ -104,7 +104,7 @@ describe('desserts routes', () => {
       };
 
       const data = await fakeRequest(app)
-        .put('/desserts')
+        .put('/desserts/id')
         .send(updatedDessert)
         // .expect(200)
         .expect('Content-Type', /json/);

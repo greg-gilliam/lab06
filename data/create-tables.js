@@ -25,8 +25,7 @@ async function run() {
                     id SERIAL PRIMARY KEY NOT NULL,
                     name VARCHAR(512) NOT NULL,
                     icing BOOL NOT NULL,
-                    type_id INTEGER NOT NULL REFERENCES types(id),
-                    // image_url VARCHAR(512)
+                    type_id INTEGER NOT NULL REFERENCES types(id)
             );
         `);
 
