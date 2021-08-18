@@ -13,7 +13,7 @@ const desserts = [
     name: 'Devils Food Cake',
     icing: true,
     type_id: 1,
-  }
+  },
 ];
 
 module.exports = desserts;
