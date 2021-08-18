@@ -96,21 +96,22 @@ describe('desserts routes', () => {
       expect(data.body.id).toBeGreaterThan(0);
 
     });
-    test.only('PUT /desserts creates an updated dessert', async () => {
+    test('PUT /desserts creates an updated dessert', async () => {
       const updatedDessert = {
-        name: 'Chocolate Chip and walnut',
+        id: 3, 
+        name: 'Chocolate Chip',
         icing: false,
         type_id: 3
       };
 
       const data = await fakeRequest(app)
-        .put('/desserts/id')
+        .put('/desserts/3')
         .send(updatedDessert)
-        // .expect(200)
+        .expect(200)
         .expect('Content-Type', /json/);
 
       expect(data.body.name).toEqual(updatedDessert.name);
-      expect(data.body.type_id).toBeGreaterThan(0);
+      expect(data.body.type_id).toEqual(updatedDessert.type_id);
     });
     test('POST /desserts creates an updated dessert', async () => {
       const newDessertInArray = {
@@ -120,7 +121,7 @@ describe('desserts routes', () => {
       };
 
       const data = await fakeRequest(app)
-        .put('/desserts')
+        .post('/desserts')
         .send(newDessertInArray)
         // .expect(200)
         .expect('Content-Type', /json/);
